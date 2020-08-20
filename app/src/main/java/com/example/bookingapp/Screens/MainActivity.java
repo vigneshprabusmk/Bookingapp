@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,30 +28,36 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout cart;
     ImageButton back;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int REQUEST_CODE = 101;
+    private static final int GET_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
+       // mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("Cart");
+        /*  Intent intent = new Intent(this, CartActivity.class);
+        startActivityForResult(intent, GET_REQUEST_CODE);*/
 
         findviewbyid();
         initial();
+
     }
 
     @Override
-    protected void onPostResume() {
+    protected void onResume() {
         try {
-            super.onPostResume();
+            super.onResume();
+
+           /* Intent intent = new Intent(this, CartActivity.class);
+            startActivityForResult(intent, GET_REQUEST_CODE);*/
+
+            mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("Cart");
             ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
             mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             mRecyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-           /* initial();
-            mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");*/
-            // Retrofit_initial();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,17 +66,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void initial() {
 
-         //Bundle gtl = MainActivity.this.getIntent().getExtras();
-          if (mList != null) {
-
-            //  mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
-          }
-
         mList = new ArrayList<>();
         mRecyclerView.setHasFixedSize(true);
         for(int i=0;i<4;i++){
 
-            mList.add(new Item("Travis", "Very professional", 7,0));
+            mList.add(new Item("barbecue", "Very professional", 7,0));
 
         }
 
@@ -109,14 +110,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
-            if(requestCode == REQUEST_CODE && data !=null) {
-               // String strMessage = data.getStringExtra("keyName");
-                mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
-                initial();
-                //Log.i(TAG, "onActivityResult: message >>" + strMessage);
+
+        if (requestCode == GET_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("Cart");
+                ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                mRecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
             }
-        }
+    }
 
     }
 

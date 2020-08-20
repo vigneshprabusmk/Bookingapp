@@ -132,7 +132,7 @@
                 android:textColor="@color/black"
                 android:textAlignment="center"
                 android:layout_gravity="end"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
         </LinearLayout>
 
