@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
            /* Intent intent = new Intent(this, CartActivity.class);
             startActivityForResult(intent, GET_REQUEST_CODE);*/
 
-            mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("Cart");
+            mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
             ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
             mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             mRecyclerView.setAdapter(adapter);
@@ -110,10 +110,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (requestCode == GET_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("Cart");
+                mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
                 ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 mRecyclerView.setAdapter(adapter);

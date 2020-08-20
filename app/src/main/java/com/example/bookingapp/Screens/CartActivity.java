@@ -78,7 +78,7 @@ public class CartActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ItemsAdapter adapter = new ItemsAdapter(items, "Cart");
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setLayoutMode(2);
+       // mRecyclerView.setLayoutMode(2);
         adapter.notifyDataSetChanged();
 
         order.setOnClickListener(new View.OnClickListener() {
