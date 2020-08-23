@@ -1,42 +1,34 @@
 package com.example.bookingapp.Screens;
 
-import androidx.annotation.NonNull;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.bookingapp.Adapter.ItemsAdapter;
-import com.example.bookingapp.Model.Item;
+import com.example.bookingapp.Model.Dishes;
 import com.example.bookingapp.R;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.example.bookingapp.Screens.MainActivity.cartitems;
-import static com.example.bookingapp.Screens.MainActivity.selected;
-
 public class CartActivity extends AppCompatActivity {
 
-    public ArrayList<Item> items;
+    public ArrayList<Dishes> dList;
     public RecyclerView mRecyclerView;
     public static TextView mPriceText, Show;
-    ImageView back;
-    LinearLayout order;
+    public ImageView back;
+    public LinearLayout order;
+    public ItemsAdapter adapter;
     public static int price = 0;
-    int count = 0;
+    public int cartcount = 0;
     public static boolean clicked=false;
 
     @Override
@@ -44,11 +36,30 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        items = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("maincart");
+        dList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("maincart");
 
         findviewbyid();
 
         initial();
+
+        Show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if((adapter.num)*2 < dList.size()){
+                    adapter.num = adapter.num +dList.size();
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
+        order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(CartActivity.this, "Check out!!!", Toast.LENGTH_LONG).show();
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +67,7 @@ public class CartActivity extends AppCompatActivity {
 
                 if(clicked =true ) {
 
-                    ArrayList<Item> item1 = (ArrayList<Item>) items;
+                    ArrayList<Dishes> item1 = (ArrayList<Dishes>) dList;
                     Intent intent = new Intent();
                     Bundle b = new Bundle();
                     b.putParcelableArrayList("cart", item1);
@@ -72,26 +83,6 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        Show.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
-
-        if (items.size() == 0) {
-
-            Toast.makeText(CartActivity.this, "No Cart added!", Toast.LENGTH_SHORT).show();
-        }
-
-        order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(CartActivity.this, "Check out!!!", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
 
@@ -108,24 +99,39 @@ public class CartActivity extends AppCompatActivity {
     public void initial() {
 
         if(clicked =true ) {
-            for (Item i : items) {
+            for (Dishes i : dList) {
                 price += i.getPrice() * i.getCount();
             }
             mPriceText.setText("₹" + String.valueOf(price));
         }else {
 
-          /*  for (Item i : items) {
+          /*  for (Item i : dList) {
                 price = i.getPrice() * i.getCount();
             }
             mPriceText.setText("₹" + String.valueOf(price));*/
 
         }
 
+        for (Dishes i : dList) {
+            cartcount += i.getCount();
+        }
+
+        if(cartcount>2){
+
+            Show.setVisibility(View.VISIBLE);
+          //  Toast.makeText(CartActivity.this, String.valueOf(v), Toast.LENGTH_LONG).show();
+        } else {
+            Show.setVisibility(View.GONE);
+
+        }
+        if (dList.size() == 0) {
+
+            Toast.makeText(CartActivity.this, "No Cart added!", Toast.LENGTH_SHORT).show();
+        }
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ItemsAdapter adapter = new ItemsAdapter(items, "Cart");
+        adapter = new ItemsAdapter(dList, "Cart");
         mRecyclerView.setAdapter(adapter);
-        // mRecyclerView.setLayoutMode(2);
         adapter.notifyDataSetChanged();
 
     }

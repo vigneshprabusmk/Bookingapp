@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bookingapp.Model.Item;
+import com.example.bookingapp.Model.Dishes;
 import com.example.bookingapp.R;
 import com.example.bookingapp.Screens.CartActivity;
 
@@ -25,19 +25,19 @@ import static com.example.bookingapp.Screens.CartActivity.price;
 import static com.example.bookingapp.Screens.MainActivity.cartitems;
 import static com.example.bookingapp.Screens.MainActivity.selected;
 import static com.example.bookingapp.Screens.MainActivity.selectitem;
-import static com.example.bookingapp.Screens.MainActivity.sum;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
-    public ArrayList<Item> item;
-    int pricelist = 0;
-    int count = 0;
-    String Tag;
+    public ArrayList<Dishes> dList;
+    public int pricelist = 0;
+    public int count = 0;
+    public String Tag;
+    public static int num = 1;
 
-   public ItemsAdapter(ArrayList<Item> itemList,String tag) {
-        item = new ArrayList<>();
+   public ItemsAdapter(ArrayList<Dishes> itemList,String tag) {
+        dList = new ArrayList<>();
         selected = new ArrayList<>();
-        this.item = itemList;
+        this.dList = itemList;
         this.Tag =tag;
     }
 
@@ -60,7 +60,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final ItemsAdapter.ViewHolder holder, int position) {
 
-        final Item itm = item.get(position);
+        final Dishes itm = dList.get(position);
         holder.name.setText(itm.getName());
         holder.price.setText("₹ " + String.valueOf(itm.getPrice()));
         holder.quantity.setText(itm.getVariant());
@@ -69,7 +69,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
       //  if (Tag.equalsIgnoreCase("Main")) {
 
-        if(item.size()!=0) {
+        if(dList.size()!=0) {
 
         if(itm.getCount()==0){
 
@@ -220,6 +220,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             holder.tadd.setVisibility(View.VISIBLE);
                             holder.LLplusminus.setVisibility(View.GONE);
                             selectitem=false;
+
+
                         }
                         count--;
                         cartitems.setText("("+String.valueOf(count)+" ITEMS)");
@@ -239,20 +241,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                     // Toast.makeText(CartActivity.this, "No Cart added!", Toast.LENGTH_SHORT).show();
                 }else {
 
-                    for (Item i : item) {
-
-
-                        if (i.getCount() == 1) {
-
-                            Show.setVisibility(View.VISIBLE);
-                           //x Toast.makeText(CartActivity.this, "Show out!!!", Toast.LENGTH_LONG).show();
-
-
-                        } else {
-                            Show.setVisibility(View.GONE);
-                        }}
-
-
                     mPriceText.setText("₹" + String.valueOf(price + pricelist));
 
 
@@ -270,9 +258,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             if (!selected.contains(itm)) {
                                 selected.add(itm);
                             }
+                            if(itm.getCount()>2){
+                                Show.setVisibility(View.VISIBLE);
+                            } else {
+                                Show.setVisibility(View.GONE);
+                            }
                         }
                         count++;
-                        for (Item i : item) {
+                        for (Dishes i : dList) {
                             pricelist = i.getPrice() * count;
                         }
                         mPriceText.setText("₹" + String.valueOf(price + pricelist));
@@ -293,10 +286,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             }
                             holder.content.setVisibility(View.GONE);
                             clicked=false;
-
+                            if(itm.getCount()>2){
+                                Show.setVisibility(View.VISIBLE);
+                            } else {
+                                Show.setVisibility(View.GONE);
+                            }
                         }
                         count--;
-                        for (Item i : item) {
+                        for (Dishes i : dList) {
                             pricelist = -i.getPrice() * count;
                         }
                         mPriceText.setText("₹" + String.valueOf(price - pricelist));
@@ -311,10 +308,21 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return item.size();
+
+        if (Tag.equalsIgnoreCase("Main")|| Tag.equalsIgnoreCase("Main2")){
+            return dList.size();
+        }else {
+
+            if(num*2 > dList.size()){
+                return dList.size();
+            }else{
+                return num*2;
+            }
+        }
+
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+   public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name, price, quantity, count,tadd;
         private ImageView add, remove;
         LinearLayout LLplusminus;

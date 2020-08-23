@@ -72,7 +72,7 @@
         android:textColor="@color/white"
         android:textSize="16dp"
         android:textStyle="normal"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 
         <ImageView
@@ -87,7 +87,7 @@
             android:background="@drawable/ic_forum_black_24dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/LL_cart_plus_minus_layout"
@@ -100,7 +100,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/countborder"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <ImageView
