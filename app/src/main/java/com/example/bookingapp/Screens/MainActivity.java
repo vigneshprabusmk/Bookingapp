@@ -11,13 +11,18 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bookingapp.Adapter.ItemsAdapter;
 import com.example.bookingapp.Model.Item;
 import com.example.bookingapp.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Objects;
+
+import static com.example.bookingapp.Screens.CartActivity.mPriceText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,56 +30,30 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Item> selected = new ArrayList<>();
     private RecyclerView mRecyclerView;
     public  static TextView cartitems;
+    public static int sum = 0;
     LinearLayout cart;
-    ImageButton back;
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int GET_REQUEST_CODE = 1;
+    public static boolean selectitem=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("Cart");
-        /*  Intent intent = new Intent(this, CartActivity.class);
-        startActivityForResult(intent, GET_REQUEST_CODE);*/
-
         findviewbyid();
         initial();
 
     }
 
-    @Override
-    protected void onResume() {
-        try {
-            super.onResume();
-
-           /* Intent intent = new Intent(this, CartActivity.class);
-            startActivityForResult(intent, GET_REQUEST_CODE);*/
-
-            mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
-            ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            mRecyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public void initial() {
 
         mList = new ArrayList<>();
         mRecyclerView.setHasFixedSize(true);
-        for(int i=0;i<4;i++){
+        for(int i=0;i<5;i++){
 
             mList.add(new Item("barbecue", "Very professional", 7,0));
 
         }
-
-        ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
+        ItemsAdapter adapter = new ItemsAdapter(mList,"Main");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         mRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -89,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putParcelableArrayList("maincart",item1);
                 intent.putExtras(b);
-                startActivity(intent);
+                startActivityForResult(intent,1);
 
             }
         });
@@ -101,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     {
         cart = (LinearLayout) findViewById(R.id.LL_Cart);
         cartitems = (TextView) findViewById(R.id.TV_CItems);
-        mRecyclerView = (RecyclerView) findViewById(R.id.PV_recent);
+        mRecyclerView = (RecyclerView) findViewById(R.id.RV_Items);
 
     }
 
@@ -110,19 +89,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GET_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                mList = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("cart");
-                ItemsAdapter adapter = new ItemsAdapter(mList,"Main");;
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+
+                mList = new ArrayList<>();
+                mRecyclerView.setHasFixedSize(true);
+                mList = data.getExtras().getParcelableArrayList("cart");
+
+                for(Item map : mList) {
+                    sum +=(map.getCount());
+                }
+                System.out.println("iteml"+sum);
+                cartitems.setText("("+String.valueOf(sum)+" ITEMS)");
+
+              ItemsAdapter adapter = new ItemsAdapter(mList,"Main2");
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 mRecyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-
             }
     }
 
     }
-
 
 }
 

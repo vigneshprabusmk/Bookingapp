@@ -1,5 +1,6 @@
 package com.example.bookingapp.Screens;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,9 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +25,7 @@ import com.example.bookingapp.R;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.example.bookingapp.Screens.MainActivity.cartitems;
 import static com.example.bookingapp.Screens.MainActivity.selected;
 
 public class CartActivity extends AppCompatActivity {
@@ -29,30 +35,40 @@ public class CartActivity extends AppCompatActivity {
     public static TextView mPriceText, Show;
     ImageView back;
     LinearLayout order;
-    int price = 0;
+    public static int price = 0;
     int count = 0;
+    public static boolean clicked=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        //Objects.requireNonNull(getSupportActionBar()).setTitle("My Cart");
+
         items = Objects.requireNonNull(this.getIntent().getExtras()).getParcelableArrayList("maincart");
 
         findviewbyid();
+
+        initial();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ArrayList<Item> item1 = (ArrayList<Item>) items;
-                Intent intent = new Intent();
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("cart", item1);
-                intent.putExtras(b);
-                setResult(Activity.RESULT_OK, intent);
+                if(clicked =true ) {
 
-                finish();
+                    ArrayList<Item> item1 = (ArrayList<Item>) items;
+                    Intent intent = new Intent();
+                    Bundle b = new Bundle();
+                    b.putParcelableArrayList("cart", item1);
+                    intent.putExtras(b);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else {
+
+                    onBackPressed();
+
+                }
             }
         });
 
@@ -69,18 +85,6 @@ public class CartActivity extends AppCompatActivity {
             Toast.makeText(CartActivity.this, "No Cart added!", Toast.LENGTH_SHORT).show();
         }
 
-
-        for (Item i : items) {
-            price += i.getPrice() * i.getCount();
-        }
-        mPriceText.setText("₹" + String.valueOf(price));
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ItemsAdapter adapter = new ItemsAdapter(items, "Cart");
-        mRecyclerView.setAdapter(adapter);
-       // mRecyclerView.setLayoutMode(2);
-        adapter.notifyDataSetChanged();
-
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,39 +92,49 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(CartActivity.this, "Check out!!!", Toast.LENGTH_LONG).show();
             }
         });
-
-
-        if (items.size() <= 3) {
-            Show.setVisibility(View.VISIBLE);
-
-        } else {
-            Show.setVisibility(View.GONE);
-        }
-
     }
+
 
     public void findviewbyid() {
 
-        mRecyclerView = findViewById(R.id.cart_list);
+        mRecyclerView = findViewById(R.id.RV_Itemslist);
         back = findViewById(R.id.IV_back);
-        mPriceText = findViewById(R.id.price);
+        mPriceText = findViewById(R.id.TV_Price);
         Show = findViewById(R.id.TV_show);
         order = findViewById(R.id.LL_Cart);
 
     }
 
+    public void initial() {
 
-    @Override
-    public void onBackPressed() {
+        if(clicked =true ) {
+            for (Item i : items) {
+                price += i.getPrice() * i.getCount();
+            }
+            mPriceText.setText("₹" + String.valueOf(price));
+        }else {
 
-        ArrayList<Item> item1 = (ArrayList<Item>) items;
-        Intent intent = new Intent();
-        Bundle b = new Bundle();
-        b.putParcelableArrayList("cart", item1);
-        intent.putExtras(b);
-        setResult(Activity.RESULT_OK, intent);
+          /*  for (Item i : items) {
+                price = i.getPrice() * i.getCount();
+            }
+            mPriceText.setText("₹" + String.valueOf(price));*/
 
-        finish();
+        }
+
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ItemsAdapter adapter = new ItemsAdapter(items, "Cart");
+        mRecyclerView.setAdapter(adapter);
+        // mRecyclerView.setLayoutMode(2);
+        adapter.notifyDataSetChanged();
+
     }
+
+
+        @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 
 }

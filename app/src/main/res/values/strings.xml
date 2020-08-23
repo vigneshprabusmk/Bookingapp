@@ -12,6 +12,11 @@
     <string name="Total">Total Cost</string>
     <string name="Order">Place Order</string>
     <string name="cart">My Cart</string>
-
+    <string name="show"><u>Show More</u></string>
+    <string name="Starter">Strater</string>
+    <string name="Review">Review Orders</string>
+    <!--
+        <string name="my_string_value">I am <u>underlined</u>.</string>
+    -->
 
 </resources>

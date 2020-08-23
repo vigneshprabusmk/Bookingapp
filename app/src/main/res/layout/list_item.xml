@@ -25,32 +25,31 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="2dp"
-            android:layout_toStartOf="@+id/cart_plus_minus_layout"
+            android:layout_toStartOf="@+id/LL_cart_plus_minus_layout"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/from_name"
+                android:id="@+id/TV_Hname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="id"
+                android:text="@string/Restaurnt"
                 android:textColor="@color/black"
                 android:textSize="24dp" />
 
-
             <TextView
-                android:id="@+id/weight_text"
+                android:id="@+id/TV_Hcontent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="name"
+                android:text="@string/Booking"
                 android:textColor="@color/black"
 
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/price_text"
+                android:id="@+id/TV_Amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7"
+                android:text="@string/amount"
                 android:textColor="@color/bootstrap_brand_danger"
                 android:textSize="18dp" />
 
@@ -58,25 +57,40 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/TV_Add"
+        android:id="@+id/BTN_Add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rectgreybor"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/Add"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="normal"
+        android:visibility="visible"/>
+
+
+        <ImageView
+            android:id="@+id/IMG_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/LL_cart_plus_minus_layout"
             android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rectgreybor"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/ic_forum_black_24dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="@string/Add"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="normal"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <LinearLayout
-            android:id="@+id/cart_plus_minus_layout"
+            android:id="@+id/LL_cart_plus_minus_layout"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_alignParentEnd="true"
@@ -91,7 +105,7 @@
 
             <ImageView
                 android:clickable="true"
-                android:id="@+id/cart_minus_img"
+                android:id="@+id/IV_cart_minus_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -100,7 +114,7 @@
                 android:focusable="true" />
 
             <TextView
-                android:id="@+id/cart_product_quantity_tv"
+                android:id="@+id/TV_cart_product_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -113,7 +127,7 @@
 
             <ImageView
                 android:clickable="true"
-                android:id="@+id/cart_plus_img"
+                android:id="@+id/IV_cart_plus_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -125,6 +139,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/V_Line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"

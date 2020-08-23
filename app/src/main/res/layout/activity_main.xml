@@ -35,6 +35,7 @@
                         android:src="@drawable/downloadfood"/>
 
                     <ImageView
+                        android:id="@+id/IV_Back"
                         android:layout_width="50dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="16dp"
@@ -44,6 +45,7 @@
                         android:src="@drawable/backarrow" />
 
                     <ImageView
+                        android:id="@+id/IV_Upload"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginTop="16dp"
@@ -53,6 +55,7 @@
                         android:src="@drawable/ic_file_upload_black_24dp" />
 
                     <ImageView
+                        android:id="@+id/IV_Info"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="end"
@@ -62,29 +65,17 @@
                         android:src="@drawable/ic_error_outline_black_24dp" />
 
 
-
-
-
-
-
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-
                     android:background="@color/white">
-
-
 
                 </FrameLayout>
 
-
-
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,7 +89,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtView_id"
+                    android:id="@+id/TV_Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -110,7 +101,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txtView_name"
+                    android:id="@+id/TV_Timings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -123,7 +114,7 @@
                     android:textStyle="normal" />
 
                 <TextView
-                    android:id="@+id/txtView_salary"
+                    android:id="@+id/TV_Contact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -136,7 +127,7 @@
                     android:textStyle="normal" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/txtView_age"
+                    android:id="@+id/BTN_Booking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -156,8 +147,6 @@
 
             android:layout_centerInParent="true"
 
-
-
         </RelativeLayout>
 
         <LinearLayout
@@ -169,7 +158,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Starter"
+                android:text="@string/Starter"
                 android:textSize="20dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="10dp"
@@ -180,7 +169,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/PV_recent"
+                android:id="@+id/RV_Items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
@@ -189,22 +178,6 @@
             </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
-
-        <!-- <TextView
-             android:id="@+id/BTN_Menu"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="8dp"
-             android:layout_marginBottom="10dp"
-             android:text="@string/menu"
-             android:textSize="17dp"
-             android:background="@drawable/menuborder"
-             android:drawableLeft="@drawable/came"
-             android:layout_gravity="center"
-             android:textColor="@color/black"
-             android:textAllCaps="true"
-             android:textStyle="bold"
-             android:padding="20dp"/>-->
 
         <LinearLayout
             android:id="@+id/LL_Cart"
