@@ -98,32 +98,19 @@ public class CartActivity extends AppCompatActivity {
 
     public void initial() {
 
-        if(clicked =true ) {
-            for (Dishes i : dList) {
-                price += i.getPrice() * i.getCount();
-            }
-            mPriceText.setText("₹" + String.valueOf(price));
-        }else {
-
-          /*  for (Item i : dList) {
-                price = i.getPrice() * i.getCount();
-            }
-            mPriceText.setText("₹" + String.valueOf(price));*/
-
-        }
-
         for (Dishes i : dList) {
             cartcount += i.getCount();
+            price += i.getPrice() * i.getCount();
         }
+        mPriceText.setText("₹" + String.valueOf(price));
 
         if(cartcount>2){
-
             Show.setVisibility(View.VISIBLE);
           //  Toast.makeText(CartActivity.this, String.valueOf(v), Toast.LENGTH_LONG).show();
         } else {
             Show.setVisibility(View.GONE);
-
         }
+
         if (dList.size() == 0) {
 
             Toast.makeText(CartActivity.this, "No Cart added!", Toast.LENGTH_SHORT).show();

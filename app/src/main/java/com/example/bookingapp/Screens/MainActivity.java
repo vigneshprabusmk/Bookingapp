@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ArrayList<Dishes> item1 = (ArrayList<Dishes>) dList;
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 Bundle b = new Bundle();
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0;i<5;i++){
 
             dList.add(new Dishes("barbecue", "Very professional", 7,0));
-
         }
         ItemsAdapter adapter = new ItemsAdapter(dList,"Main");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -83,18 +81,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-
-                dList = new ArrayList<>();
-                mRecyclerView.setHasFixedSize(true);
                 dList = data.getExtras().getParcelableArrayList("cart");
 
-                for(Dishes map : dList) {
-                    sum +=(map.getCount());
+                for(Dishes item : dList) {
+                    sum +=(item.getCount());
                 }
-                System.out.println("iteml"+sum);
+              //  System.out.println("iteml"+sum);
                 cartitems.setText("("+String.valueOf(sum)+" ITEMS)");
 
               ItemsAdapter adapter = new ItemsAdapter(dList,"Main2");
+                mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 mRecyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
