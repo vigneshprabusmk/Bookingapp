@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Dishes> selected = new ArrayList<>();
     private RecyclerView mRecyclerView;
     public  static TextView cartitems;
-    public static int sum = 0;
     public LinearLayout cart;
     public static boolean selectitem=false;
 
@@ -32,36 +32,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         findviewbyid();
+
         initial();
-
-
-        cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<Dishes> item1 = (ArrayList<Dishes>) dList;
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("maincart",item1);
-                intent.putExtras(b);
-                startActivityForResult(intent,1);
-
-            }
-        });
-
     }
 
     public void initial() {
 
         dList = new ArrayList<>();
         mRecyclerView.setHasFixedSize(true);
+
         for(int i=0;i<5;i++){
 
             dList.add(new Dishes("barbecue", "Very professional", 7,0));
         }
-        ItemsAdapter adapter = new ItemsAdapter(dList,"Main");
+        ItemsAdapter adapter = new ItemsAdapter(dList,this,"Main");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         mRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    ArrayList<Dishes> item1 = (ArrayList<Dishes>) dList;
+                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                    Bundle b = new Bundle();
+                    b.putParcelableArrayList("maincart",item1);
+                    intent.putExtras(b);
+                    startActivityForResult(intent,1);
+
+            }
+        });
 
     }
 
@@ -82,14 +83,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 dList = data.getExtras().getParcelableArrayList("cart");
-
+                int sum = 0;
                 for(Dishes item : dList) {
                     sum +=(item.getCount());
                 }
-              //  System.out.println("iteml"+sum);
                 cartitems.setText("("+String.valueOf(sum)+" ITEMS)");
 
-              ItemsAdapter adapter = new ItemsAdapter(dList,"Main2");
+              ItemsAdapter adapter = new ItemsAdapter(dList,this,"Main2");
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 mRecyclerView.setAdapter(adapter);

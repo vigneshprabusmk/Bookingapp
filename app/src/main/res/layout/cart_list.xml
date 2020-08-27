@@ -138,6 +138,19 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/IV_msg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/LL_cart_plus_minus_layout"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_forum_black_24dp" />
+
         <View
             android:id="@+id/V_Line"
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.example.bookingapp.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,12 +8,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingapp.Model.Dishes;
 import com.example.bookingapp.R;
+import com.example.bookingapp.Screens.CartActivity;
 
 import java.util.ArrayList;
 
@@ -31,11 +34,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     public int count = 0;
     public String Tag;
     public static int num = 1;
+    Context context;
 
-   public ItemsAdapter(ArrayList<Dishes> itemList,String tag) {
+   public ItemsAdapter(ArrayList<Dishes> itemList,Context context,String tag) {
         dList = new ArrayList<>();
         selected = new ArrayList<>();
         this.dList = itemList;
+       this.context = context;
         this.Tag =tag;
     }
 
@@ -104,20 +109,26 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
                     itm.setCount(itm.getCount() - 1);
                 holder.count.setText(String.valueOf(itm.getCount()));
+
                 if (itm.getCount() == 0) {
 
                     if (selected.contains(itm)) {
                         selected.remove(itm);
                         holder.count.setText(String.valueOf(itm.getCount()));
+
                     }
                     holder.tadd.setVisibility(View.VISIBLE);
                     holder.LLplusminus.setVisibility(View.GONE);
+
                 }
+
                 count--;
                 cartitems.setText("("+String.valueOf(count)+" ITEMS)");
             });
 
-        } else {
+        }
+
+        else {
 
             holder.tadd.setVisibility(View.GONE);
             holder.LLplusminus.setVisibility(View.VISIBLE);
@@ -166,6 +177,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
                 }else {
 
+
                     holder.tadd.setOnClickListener((v) -> {
                         selectitem=true;
                         holder.tadd.setVisibility(View.GONE);
@@ -177,7 +189,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             selected.add(itm);
                         }
                         count++;
-                        cartitems.setText("("+String.valueOf(itm.getCount()+count)+" ITEMS)");
+                       // cartitems.setText("("+String.valueOf(count)+" ITEMS)");
+
+                        int addcartcount=0;
+                        for (Dishes i : dList) {
+                            addcartcount += i.getCount();
+                        }
+                        cartitems.setText("("+String.valueOf(addcartcount)+" ITEMS)");
+                       // Toast.makeText(context,(String.valueOf(addcartcount)),Toast.LENGTH_SHORT).show();
 
                     });
 
@@ -191,31 +210,47 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                                 selected.add(itm);
                             }
                             count++;
-                            cartitems.setText("("+String.valueOf(count)+" ITEMS)");
+                            //cartitems.setText("("+String.valueOf(count)+" ITEMS)");
+
+                            int cartcountadd=0;
+                            for (Dishes i : dList) {
+                                cartcountadd += i.getCount();
+                            }
+                            cartitems.setText("("+String.valueOf(cartcountadd)+" ITEMS)");
+                           // Toast.makeText(context,(String.valueOf(cartcountadd)),Toast.LENGTH_SHORT).show();
                         }
 
                     });
 
                     holder.remove.setOnClickListener(v -> {
                         selectitem=true;
+
                         if (!(itm.getCount() <= 0))
 
                             itm.setCount(itm.getCount() - 1);
                         holder.count.setText(String.valueOf(itm.getCount()));
+
                         if (itm.getCount() == 0) {
 
                             if (selected.contains(itm)) {
                                 selected.remove(itm);
                                 holder.count.setText(String.valueOf(itm.getCount()));
                             }
+                            selectitem=false;
                             holder.tadd.setVisibility(View.VISIBLE);
                             holder.LLplusminus.setVisibility(View.GONE);
-                            selectitem=false;
-
 
                         }
                         count--;
-                        cartitems.setText("("+String.valueOf(count)+" ITEMS)");
+                       // cartitems.setText("("+String.valueOf(count)+" ITEMS)");
+
+                        int cartcountremove=0;
+                        for (Dishes i : dList) {
+                            cartcountremove += i.getCount();
+                        }
+                        cartitems.setText("("+String.valueOf(cartcountremove)+" ITEMS)");
+                       // Toast.makeText(context,(String.valueOf(cartcountremove)),Toast.LENGTH_SHORT).show();
+
                     });
 
                 }
@@ -224,18 +259,23 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
         else if (Tag.equalsIgnoreCase("Cart")) {
             {
-                //  mPriceText.setText("₹ " + String.valueOf(price));
 
                 if(itm.getCount()==0){
                     holder.tadd.setVisibility(View.VISIBLE);
                     holder.content.setVisibility(View.GONE);
-                    // Toast.makeText(CartActivity.this, "No Cart added!", Toast.LENGTH_SHORT).show();
                 }else {
-                    mPriceText.setText("₹" + String.valueOf(price + pricelist));
 
                     holder.tadd.setVisibility(View.GONE);
                     holder.content.setVisibility(View.VISIBLE);
                     holder.LLplusminus.setVisibility(View.VISIBLE);
+
+                   /* for (int i = 0; i <selected.size() ; i++) {
+                        if(selected.size()>2) {
+                            Show.setVisibility(View.VISIBLE);
+                        }else {
+                            Show.setVisibility(View.GONE);
+                        }
+                    }*/
 
                     holder.add.setOnClickListener((v) -> {
 
@@ -247,17 +287,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             if (!selected.contains(itm)) {
                                 selected.add(itm);
                             }
-                            if(itm.getCount()>2){
-                                Show.setVisibility(View.VISIBLE);
-                            } else {
-                                Show.setVisibility(View.GONE);
+                            count++;
+                            int cartcount = 0;
+                            for (Dishes i : dList) {
+                                pricelist = i.getPrice() * count;
                             }
+                            mPriceText.setText("₹" + String.valueOf(price + pricelist));
                         }
-                        count++;
-                        for (Dishes i : dList) {
-                            pricelist = i.getPrice() * count;
-                        }
-                        mPriceText.setText("₹" + String.valueOf(price + pricelist));
+
 
                     });
 
@@ -275,19 +312,23 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             }
                             holder.content.setVisibility(View.GONE);
                             clicked=false;
-                            if(itm.getCount()>2){
+                            if(itm.getCount()>2) {
                                 Show.setVisibility(View.VISIBLE);
-                            } else {
+                            }else {
                                 Show.setVisibility(View.GONE);
                             }
+                           // Show.setVisibility(View.GONE);
                         }
+
                         count--;
+                        int cartcount = 0;
                         for (Dishes i : dList) {
                             pricelist = -i.getPrice() * count;
                         }
                         mPriceText.setText("₹" + String.valueOf(price - pricelist));
 
                     });
+
                 }
             }
 
@@ -298,15 +339,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
 
-        if (Tag.equalsIgnoreCase("Main")|| Tag.equalsIgnoreCase("Main2")){
-            return dList.size();
-        }else {
-
+        if (Tag.equalsIgnoreCase("Cart")){
             if(num*2 > dList.size()){
                 return dList.size();
             }else{
                 return num*2;
             }
+
+        } else {
+           // (Tag.equalsIgnoreCase("Main")|| Tag.equalsIgnoreCase("Main2")){
+            return dList.size();
         }
 
     }
